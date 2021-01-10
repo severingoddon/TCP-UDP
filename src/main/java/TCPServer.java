@@ -1,3 +1,5 @@
+
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.*;
@@ -5,14 +7,14 @@ import java.util.Scanner;
 
 /**
  * Diese Klasse Startet einen TCP Server auf Port 6969 (höhöh69)
- * Es kann sich ein Client verbinden und ab diesem Zeitpunkt ist die Verbindung aufgebaut. Die Kommunikation funktioniert im Ping-Pong Modus,
- * dh es kann immer der Server eine Nachricht schreiben und dann der Client immer abwechselnd. (Applikationsbedingt, um das zu beheben müsste man Multithreading machen)
- * Es ist ein Scanner integriert, dh. es kann in der Konsole geschrieben werden.
- * Der Client muss die Kommunikation beginnen!
+ * Es kann sich ein Client verbinden und ab diesem Zeitpunkt ist die Verbindung aufgebaut.
+ * Das Programm läuft auf multithreading dh. senden und empfangen sind zwei Threads.
  *
  * @author Severin Goddon
  */
 public class TCPServer {
+
+    private Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         TCPServer server = new TCPServer();
@@ -25,12 +27,35 @@ public class TCPServer {
 
     public void startConnection() throws IOException {
         int port = 6969;
-        Scanner sc = new Scanner(System.in);
         ServerSocket serverSocket = new ServerSocket(port);
         Socket client = serverSocket.accept();
+        new Thread(() -> {
+            try {
+                listen(client);
+            }catch (IOException e){
+                System.out.println("ups");
+            }
+        }).start();
+        new Thread(() -> {
+            try {
+                send(client);
+            }catch (IOException e){
+                System.out.println("ups");
+            }
+        }).start();
+    }
+
+
+
+    public void listen(Socket client) throws IOException {
         while (true) {
             String nachricht = getMessage(client);
             System.out.println(nachricht);
+        }
+    }
+
+    public void send(Socket client) throws IOException {
+        while (true) {
             String retour = sc.nextLine();
             sendMessage(client, retour);
         }
