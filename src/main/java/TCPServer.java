@@ -6,9 +6,9 @@ import java.io.*;
 import java.util.Scanner;
 
 /**
- * Diese Klasse Startet einen TCP Server auf Port 6969 (höhöh69)
+ * Diese Klasse Startet einen TCP Server auf Port 6969
  * Es kann sich ein Client verbinden und ab diesem Zeitpunkt ist die Verbindung aufgebaut.
- * Das Programm läuft auf multithreading dh. senden und empfangen sind zwei Threads.
+ * Das Programm läuft multithreaded dh. senden und empfangen sind zwei Threads.
  *
  * @author Severin Goddon
  */
